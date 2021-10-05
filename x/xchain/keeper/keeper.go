@@ -7,7 +7,7 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/example/blog/x/blog/types"
+	"github.com/rosen-labs/xchain/x/xchain/types"
 	// this line is used by starport scaffolding # ibc/keeper/import
 )
 

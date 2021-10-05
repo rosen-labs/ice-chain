@@ -8,7 +8,7 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/client"
 	// "github.com/cosmos/cosmos-sdk/client/flags"
-	"github.com/example/blog/x/blog/types"
+	"github.com/rosen-labs/xchain/x/xchain/types"
 )
 
 var (

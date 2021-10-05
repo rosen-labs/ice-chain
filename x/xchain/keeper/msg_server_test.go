@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/example/blog/x/blog/types"
+	"github.com/rosen-labs/xchain/x/xchain/types"
 )
 
 func setupMsgServer(t testing.TB) (types.MsgServer, context.Context) {

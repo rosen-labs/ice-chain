@@ -2,8 +2,8 @@ package blog
 
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/example/blog/x/blog/keeper"
-	"github.com/example/blog/x/blog/types"
+	"github.com/rosen-labs/xchain/x/xchain/keeper"
+	"github.com/rosen-labs/xchain/x/xchain/types"
 )
 
 // InitGenesis initializes the capability module's state from a provided genesis

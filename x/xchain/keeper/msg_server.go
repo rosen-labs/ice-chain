@@ -1,7 +1,7 @@
 package keeper
 
 import (
-	"github.com/example/blog/x/blog/types"
+	"github.com/rosen-labs/xchain/x/xchain/types"
 )
 
 type msgServer struct {

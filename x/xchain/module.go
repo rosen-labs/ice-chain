@@ -3,6 +3,7 @@ package blog
 import (
 	"encoding/json"
 	"fmt"
+
 	// this line is used by starport scaffolding # 1
 
 	"github.com/gorilla/mux"
@@ -16,9 +17,9 @@ import (
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
-	"github.com/example/blog/x/blog/client/cli"
-	"github.com/example/blog/x/blog/keeper"
-	"github.com/example/blog/x/blog/types"
+	"github.com/rosen-labs/xchain/x/xchain/client/cli"
+	"github.com/rosen-labs/xchain/x/xchain/keeper"
+	"github.com/rosen-labs/xchain/x/xchain/types"
 	// this line is used by starport scaffolding # ibc/module/import
 )
 
