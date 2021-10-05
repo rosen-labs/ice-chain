@@ -1,9 +1,9 @@
 syntax = "proto3";
-package example.blog.blog;
+package rosen_labs.xchain;
 
 // this line is used by starport scaffolding # genesis/proto/import
 
-option go_package = "github.com/example/blog/x/blog/types";
+option go_package = "github.com/rosen-labs/xchain/x/xchain/types";
 
 // GenesisState defines the blog module's genesis state.
 message GenesisState {

@@ -1,0 +1,14 @@
+syntax = "proto3";
+package rosen_labs.xchain;
+
+option go_package = "github.com/rosen-labs/xchain/x/xchain/types";
+
+import "gogoproto/gogo.proto";
+
+message MsgBridgeRequest {
+  string reciever = 1;
+  string amount = 2; 
+  string fee = 3; 
+  string srcChainId = 4;
+  string destChainId = 5;
+}
