@@ -1,4 +1,4 @@
-package blog
+package xchain
 
 import (
 	"encoding/json"
