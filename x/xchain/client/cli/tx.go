@@ -33,10 +33,12 @@ func GetTxCmd() *cobra.Command {
 		RunE:                       client.ValidateCmd,
 	}
 
+	cmd.AddCommand(GetBridgeXTokenCmd())
+
 	return cmd
 }
 
-func BridgeXToken() *cobra.Command {
+func GetBridgeXTokenCmd() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "bridge-to [chain_id] [amount] [fee] [reciever]",
 		Short: "Bridge amounts of x token to specific chain",
