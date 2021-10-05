@@ -7,8 +7,8 @@ import "gogoproto/gogo.proto";
 
 message MsgBridgeRequest {
   string reciever = 1;
-  string amount = 2; 
-  string fee = 3; 
-  string srcChainId = 4;
+  float amount = 2; 
+  float fee = 3; 
   string destChainId = 5;
+  string signer = 6;
 }
