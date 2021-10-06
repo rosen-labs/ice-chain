@@ -60,12 +60,12 @@ func GetBridgeXTokenCmd() *cobra.Command {
 			}
 
 			amount, err := sdk.ParseCoinNormalized(argsAmount)
-			if err == nil {
+			if err != nil {
 				return fmt.Errorf("amount must be float")
 			}
 
 			fee, err := sdk.ParseCoinNormalized(argsFee)
-			if err == nil {
+			if err != nil {
 				return fmt.Errorf("fee must be float")
 			}
 
