@@ -85,7 +85,7 @@ import (
 	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
 
 	// this line is used by starport scaffolding # stargate/app/moduleImport
-	blogmodule "github.com/rosen-labs/xchain/x/xchain"
+	xchainmodule "github.com/rosen-labs/xchain/x/xchain"
 	blogmodulekeeper "github.com/rosen-labs/xchain/x/xchain/keeper"
 	blogmoduletypes "github.com/rosen-labs/xchain/x/xchain/types"
 
@@ -139,7 +139,7 @@ var (
 		transfer.AppModuleBasic{},
 		vesting.AppModuleBasic{},
 		// this line is used by starport scaffolding # stargate/app/moduleBasic
-		blogmodule.AppModuleBasic{},
+		xchainmodule.AppModuleBasic{},
 	)
 
 	// module account permissions
@@ -343,8 +343,10 @@ func New(
 		appCodec,
 		keys[blogmoduletypes.StoreKey],
 		keys[blogmoduletypes.MemStoreKey],
+		app.BankKeeper,
 	)
-	blogModule := blogmodule.NewAppModule(appCodec, app.BlogKeeper)
+
+	xchainModule := xchainmodule.NewAppModule(appCodec, app.BlogKeeper)
 
 	// this line is used by starport scaffolding # stargate/app/keeperDefinition
 
@@ -384,7 +386,7 @@ func New(
 		params.NewAppModule(app.ParamsKeeper),
 		transferModule,
 		// this line is used by starport scaffolding # stargate/app/appModule
-		blogModule,
+		xchainModule,
 	)
 
 	// During begin block slashing happens after distr.BeginBlocker so that

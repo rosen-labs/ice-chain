@@ -2,7 +2,6 @@ package cli
 
 import (
 	"fmt"
-	"strconv"
 	"time"
 
 	"github.com/spf13/cobra"
@@ -10,6 +9,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 
 	// "github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/rosen-labs/xchain/x/xchain/types"
@@ -49,27 +49,32 @@ func GetBridgeXTokenCmd() *cobra.Command {
 			argsFee := string(args[2])
 			argsReciever := string(args[3])
 
-			amount, err := strconv.ParseFloat(argsAmount, 32)
-			if err == nil {
-				return fmt.Errorf("amount must be float")
-			}
-
-			fee, err := strconv.ParseFloat(argsFee, 32)
-			if err == nil {
-				return fmt.Errorf("fee must be float")
-			}
-
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err
 			}
 
+			from := clientCtx.GetFromAddress()
+			if from == nil {
+				return fmt.Errorf("must pass from flag")
+			}
+
+			amount, err := sdk.ParseCoinNormalized(argsAmount)
+			if err == nil {
+				return fmt.Errorf("amount must be float")
+			}
+
+			fee, err := sdk.ParseCoinNormalized(argsFee)
+			if err == nil {
+				return fmt.Errorf("fee must be float")
+			}
+
 			msg := types.NewMsgBridgeRequest(
 				argsChainId,
-				float32(amount),
-				float32(fee),
+				amount,
+				fee,
 				argsReciever,
-				clientCtx.GetFromAddress().String(),
+				from,
 			)
 
 			if err := msg.ValidateBasic(); err != nil {

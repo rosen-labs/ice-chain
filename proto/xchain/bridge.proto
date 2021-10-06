@@ -1,5 +1,6 @@
 syntax = "proto3";
-package rosen_labs.xchain;
+package rosen_labs.xchain.xchain;
+import "cosmos/base/v1beta1/coin.proto";
 
 option go_package = "github.com/rosen-labs/xchain/x/xchain/types";
 
@@ -7,8 +8,8 @@ import "gogoproto/gogo.proto";
 
 message MsgBridgeRequest {
   string reciever = 1;
-  float amount = 2; 
-  float fee = 3; 
+  cosmos.base.v1beta1.Coin amount = 2;  
+  cosmos.base.v1beta1.Coin fee = 3; 
   string destChainId = 5;
   string signer = 6;
 }

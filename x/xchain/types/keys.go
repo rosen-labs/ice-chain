@@ -2,7 +2,7 @@ package types
 
 const (
 	// ModuleName defines the module name
-	ModuleName = "blog"
+	ModuleName = "xchain"
 
 	// StoreKey defines the primary module store key
 	StoreKey = ModuleName
@@ -14,7 +14,7 @@ const (
 	QuerierRoute = ModuleName
 
 	// MemStoreKey defines the in-memory store key
-	MemStoreKey = "mem_blog"
+	MemStoreKey = "mem_xchain"
 
 	// this line is used by starport scaffolding # ibc/keys/name
 )

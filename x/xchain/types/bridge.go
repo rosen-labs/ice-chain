@@ -6,22 +6,23 @@ import (
 
 func NewMsgBridgeRequest(
 	destChainId string,
-	amount float32,
-	fee float32,
+	amount sdk.Coin,
+	fee sdk.Coin,
 	reciever string,
-	Signer string,
+	signer sdk.AccAddress,
 ) *MsgBridgeRequest {
 	return &MsgBridgeRequest{
 		Reciever:    reciever,
-		Amount:      amount,
-		Fee:         fee,
+		Amount:      &amount,
+		Fee:         &fee,
 		DestChainId: destChainId,
+		Signer:      signer.String(),
 	}
 }
 
 // Route ...
 func (m *MsgBridgeRequest) Route() string {
-	return "Bridge"
+	return "xchain"
 }
 
 // Type ...
