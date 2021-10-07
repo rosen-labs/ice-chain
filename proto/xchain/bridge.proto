@@ -10,6 +10,6 @@ message MsgBridgeRequest {
   string reciever = 1;
   cosmos.base.v1beta1.Coin amount = 2;  
   cosmos.base.v1beta1.Coin fee = 3; 
-  string destChainId = 5;
-  string signer = 6;
+  uint32 destChainId = 4;
+  string signer = 5;
 }

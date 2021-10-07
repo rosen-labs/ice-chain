@@ -5,7 +5,7 @@ import (
 )
 
 func NewMsgBridgeRequest(
-	destChainId string,
+	destChainId uint32,
 	amount sdk.Coin,
 	fee sdk.Coin,
 	reciever string,

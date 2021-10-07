@@ -2,6 +2,7 @@ package cli
 
 import (
 	"fmt"
+	"strconv"
 	"time"
 
 	"github.com/spf13/cobra"
@@ -45,10 +46,13 @@ func GetBridgeXTokenCmd() *cobra.Command {
 		Short: "Bridge amounts of x token to specific chain",
 		Args:  cobra.ExactArgs(4),
 		RunE: func(cmd *cobra.Command, args []string) error {
-			argsChainId := string(args[0])
 			argsAmount := string(args[1])
 			argsFee := string(args[2])
 			argsReciever := string(args[3])
+			argsChainId, err := argsToUint32("chain_id", args[0])
+			if err != nil {
+				return err
+			}
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -88,4 +92,13 @@ func GetBridgeXTokenCmd() *cobra.Command {
 	flags.AddTxFlagsToCmd(cmd)
 
 	return cmd
+}
+
+func argsToUint32(argsName string, value string) (uint32, error) {
+	temp, err := strconv.ParseUint(value, 10, 32)
+	if err != nil {
+		return 0, fmt.Errorf("%s must be number (uint32)", argsName)
+	} else {
+		return uint32(temp), nil
+	}
 }
