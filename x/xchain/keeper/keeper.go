@@ -7,6 +7,7 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	clienttypes "github.com/cosmos/cosmos-sdk/x/ibc/core/02-client/types"
 	"github.com/rosen-labs/xchain/x/xchain/types"
 	// this line is used by starport scaffolding # ibc/keeper/import
 )
@@ -58,4 +59,24 @@ func (k Keeper) SendCoinsFromAccountToModule(ctx sdk.Context, senderAddr sdk.Acc
 
 func (k Keeper) GetAllBalances(ctx sdk.Context, addr sdk.AccAddress) sdk.Coins {
 	return k.bankKeeper.GetAllBalances(ctx, addr)
+}
+
+func (k Keeper) SendMintRequest(
+	ctx sdk.Context,
+	reciever string,
+	amount uint64,
+	fee uint64,
+	tokenId uint32,
+	srcChainId uint32,
+	destChainId uint32,
+) error {
+	packet := types.MsgMintRequestPacketData{
+		Reciever:    reciever,
+		Amount:      amount,
+		Fee:         fee,
+		TokenId:     tokenId,
+		SrcChainId:  srcChainId,
+		DestChainId: destChainId,
+	}
+	return k.TransmitMsgMintRequestPacket(ctx, packet, types.PortID, "chan", clienttypes.ZeroHeight(), 0)
 }

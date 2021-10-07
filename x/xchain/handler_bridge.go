@@ -22,7 +22,17 @@ func handleMsgBridgeRequest(ctx sdk.Context, k keeper.Keeper, msg *types.MsgBrid
 		return nil, err
 	}
 
-	//TODO : send ibc protocal
+	if err := k.SendMintRequest(
+		ctx,
+		msg.Reciever,
+		msg.Amount.Amount.Uint64(),
+		msg.Fee.Amount.Uint64(),
+		0,
+		1,
+		msg.DestChainId,
+	); err != nil {
+		return nil, err
+	}
 
 	return &sdk.Result{Events: ctx.EventManager().ABCIEvents()}, nil
 }
