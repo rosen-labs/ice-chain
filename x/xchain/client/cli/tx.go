@@ -35,6 +35,8 @@ func GetTxCmd() *cobra.Command {
 	}
 
 	// this line is used by starport scaffolding # 1
+	cmd.AddCommand(CmdSendMsgMintRequest())
+
 	cmd.AddCommand(GetBridgeXTokenCmd())
 
 	return cmd
@@ -100,5 +102,14 @@ func argsToUint32(argsName string, value string) (uint32, error) {
 		return 0, fmt.Errorf("%s must be number (uint32)", argsName)
 	} else {
 		return uint32(temp), nil
+	}
+}
+
+func argsToUint64(argsName string, value string) (uint64, error) {
+	temp, err := strconv.ParseUint(value, 10, 64)
+	if err != nil {
+		return 0, fmt.Errorf("%s must be number (uint32)", argsName)
+	} else {
+		return temp, nil
 	}
 }
