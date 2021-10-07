@@ -17,6 +17,7 @@ func NewHandler(k keeper.Keeper) sdk.Handler {
 		ctx = ctx.WithEventManager(sdk.NewEventManager())
 
 		switch msg := msg.(type) {
+		// this line is used by starport scaffolding # 1
 		case *types.MsgBridgeRequest:
 			return handleMsgBridgeRequest(ctx, k, msg)
 		default:

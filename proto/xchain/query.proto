@@ -1,5 +1,5 @@
 syntax = "proto3";
-package rosen_labs.xchain;
+package rosenlabs.xchain.xchain;
 
 import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";

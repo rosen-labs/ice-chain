@@ -3,7 +3,6 @@ package xchain
 import (
 	"encoding/json"
 	"fmt"
-
 	// this line is used by starport scaffolding # 1
 
 	"github.com/gorilla/mux"
@@ -17,16 +16,16 @@ import (
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
+	porttypes "github.com/cosmos/cosmos-sdk/x/ibc/core/05-port/types"
 	"github.com/rosen-labs/xchain/x/xchain/client/cli"
 	"github.com/rosen-labs/xchain/x/xchain/keeper"
 	"github.com/rosen-labs/xchain/x/xchain/types"
-	// this line is used by starport scaffolding # ibc/module/import
 )
 
 var (
 	_ module.AppModule      = AppModule{}
 	_ module.AppModuleBasic = AppModuleBasic{}
-	// this line is used by starport scaffolding # ibc/module/interface
+	_ porttypes.IBCModule   = AppModule{}
 )
 
 // ----------------------------------------------------------------------------

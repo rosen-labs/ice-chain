@@ -1,5 +1,5 @@
 syntax = "proto3";
-package rosen_labs.xchain;
+package rosenlabs.xchain.xchain;
 
 // this line is used by starport scaffolding # proto/tx/import
 

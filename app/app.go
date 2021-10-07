@@ -86,8 +86,8 @@ import (
 
 	// this line is used by starport scaffolding # stargate/app/moduleImport
 	xchainmodule "github.com/rosen-labs/xchain/x/xchain"
-	blogmodulekeeper "github.com/rosen-labs/xchain/x/xchain/keeper"
-	blogmoduletypes "github.com/rosen-labs/xchain/x/xchain/types"
+	xchainmodulekeeper "github.com/rosen-labs/xchain/x/xchain/keeper"
+	xchainmoduletypes "github.com/rosen-labs/xchain/x/xchain/types"
 
 	"github.com/tendermint/spm/cosmoscmd"
 )
@@ -140,6 +140,7 @@ var (
 		vesting.AppModuleBasic{},
 		// this line is used by starport scaffolding # stargate/app/moduleBasic
 		xchainmodule.AppModuleBasic{},
+		xchainmodule.AppModuleBasic{},
 	)
 
 	// module account permissions
@@ -151,7 +152,7 @@ var (
 		stakingtypes.NotBondedPoolName: {authtypes.Burner, authtypes.Staking},
 		govtypes.ModuleName:            {authtypes.Burner},
 		ibctransfertypes.ModuleName:    {authtypes.Minter, authtypes.Burner},
-		blogmoduletypes.ModuleName:     {authtypes.Burner},
+		xchainmoduletypes.ModuleName:   {authtypes.Burner, authtypes.Minter},
 		// this line is used by starport scaffolding # stargate/app/maccPerms
 	}
 )
@@ -208,8 +209,8 @@ type App struct {
 	ScopedTransferKeeper capabilitykeeper.ScopedKeeper
 
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
-
-	BlogKeeper blogmodulekeeper.Keeper
+	ScopedXchainKeeper capabilitykeeper.ScopedKeeper
+	XchainKeeper       xchainmodulekeeper.Keeper
 
 	// the module manager
 	mm *module.Manager
@@ -244,7 +245,7 @@ func New(
 		govtypes.StoreKey, paramstypes.StoreKey, ibchost.StoreKey, upgradetypes.StoreKey,
 		evidencetypes.StoreKey, ibctransfertypes.StoreKey, capabilitytypes.StoreKey,
 		// this line is used by starport scaffolding # stargate/app/storeKey
-		blogmoduletypes.StoreKey,
+		xchainmoduletypes.StoreKey,
 	)
 	tkeys := sdk.NewTransientStoreKeys(paramstypes.TStoreKey)
 	memKeys := sdk.NewMemoryStoreKeys(capabilitytypes.MemStoreKey)
@@ -340,14 +341,18 @@ func New(
 		&stakingKeeper, govRouter,
 	)
 
-	app.BlogKeeper = *blogmodulekeeper.NewKeeper(
+	scopedXchainKeeper := app.CapabilityKeeper.ScopeToModule(xchainmoduletypes.ModuleName)
+	app.ScopedXchainKeeper = scopedXchainKeeper
+	app.XchainKeeper = *xchainmodulekeeper.NewKeeper(
 		appCodec,
-		keys[blogmoduletypes.StoreKey],
-		keys[blogmoduletypes.MemStoreKey],
+		keys[xchainmoduletypes.StoreKey],
+		keys[xchainmoduletypes.MemStoreKey],
+		app.IBCKeeper.ChannelKeeper,
+		&app.IBCKeeper.PortKeeper,
+		scopedXchainKeeper,
 		app.BankKeeper,
 	)
-
-	xchainModule := xchainmodule.NewAppModule(appCodec, app.BlogKeeper)
+	xchainModule := xchainmodule.NewAppModule(appCodec, app.XchainKeeper)
 
 	// this line is used by starport scaffolding # stargate/app/keeperDefinition
 
@@ -355,6 +360,7 @@ func New(
 	ibcRouter := porttypes.NewRouter()
 	ibcRouter.AddRoute(ibctransfertypes.ModuleName, transferModule)
 	// this line is used by starport scaffolding # ibc/app/router
+	ibcRouter.AddRoute(xchainmoduletypes.ModuleName, xchainModule)
 	app.IBCKeeper.SetRouter(ibcRouter)
 
 	/****  Module Options ****/
@@ -387,6 +393,7 @@ func New(
 		params.NewAppModule(app.ParamsKeeper),
 		transferModule,
 		// this line is used by starport scaffolding # stargate/app/appModule
+		xchainModule,
 		xchainModule,
 	)
 
@@ -421,7 +428,7 @@ func New(
 		evidencetypes.ModuleName,
 		ibctransfertypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/initGenesis
-		blogmoduletypes.ModuleName,
+		xchainmoduletypes.ModuleName,
 	)
 
 	app.mm.RegisterInvariants(&app.CrisisKeeper)
@@ -609,7 +616,7 @@ func initParamsKeeper(appCodec codec.BinaryMarshaler, legacyAmino *codec.LegacyA
 	paramsKeeper.Subspace(ibctransfertypes.ModuleName)
 	paramsKeeper.Subspace(ibchost.ModuleName)
 	// this line is used by starport scaffolding # stargate/app/paramSubspace
-	paramsKeeper.Subspace(blogmoduletypes.ModuleName)
+	paramsKeeper.Subspace(xchainmoduletypes.ModuleName)
 
 	return paramsKeeper
 }

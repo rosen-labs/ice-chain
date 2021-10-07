@@ -16,10 +16,17 @@ const (
 	// MemStoreKey defines the in-memory store key
 	MemStoreKey = "mem_xchain"
 
-	// this line is used by starport scaffolding # ibc/keys/name
+	// Version defines the current version the IBC module supports
+	Version = "xchain-1"
+
+	// PortID is the default port id that module binds to
+	PortID = "xchain"
 )
 
-// this line is used by starport scaffolding # ibc/keys/port
+var (
+	// PortKey defines the key to store the port ID in store
+	PortKey = KeyPrefix("xchain-port-")
+)
 
 func KeyPrefix(p string) []byte {
 	return []byte(p)

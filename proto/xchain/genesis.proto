@@ -1,12 +1,12 @@
 syntax = "proto3";
-package rosen_labs.xchain;
+package rosenlabs.xchain.xchain;
 
 // this line is used by starport scaffolding # genesis/proto/import
 
 option go_package = "github.com/rosen-labs/xchain/x/xchain/types";
 
-// GenesisState defines the blog module's genesis state.
+// GenesisState defines the xchain module's genesis state.
 message GenesisState {
     // this line is used by starport scaffolding # genesis/proto/state
-    // this line is used by starport scaffolding # ibc/genesis/proto
+    string port_id = 1; // this line is used by starport scaffolding # genesis/proto/stateField
 }
