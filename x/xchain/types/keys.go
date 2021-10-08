@@ -17,10 +17,10 @@ const (
 	MemStoreKey = "mem_xchain"
 
 	// Version defines the current version the IBC module supports
-	Version = "xchain-1"
+	Version = "bridge-1"
 
 	// PortID is the default port id that module binds to
-	PortID = "xchain"
+	PortID = "bridge"
 )
 
 var (

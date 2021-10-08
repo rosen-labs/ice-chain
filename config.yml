@@ -4,7 +4,7 @@ accounts:
   - name: bob
     coins: ['10000token', '100000000stake']
   - name: relayer
-    address: cosmos1qqae7949a97krudpg2nq299rlp449z0qc2989e
+    address: cosmos1zwsmvlankkn24dd6xg428e3fxqvphck2lrxstv
     coins: ['20000token', '200000000stake']
 validator:
   name: alice
@@ -15,7 +15,6 @@ client:
   openapi:
     path: 'docs/static/openapi.yml'
 faucet:
-  host: ':4501'
   name: bob
   coins: ['5token', '100000stake']
 genesis:

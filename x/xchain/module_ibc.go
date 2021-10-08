@@ -23,7 +23,7 @@ func (am AppModule) OnChanOpenInit(
 	counterparty channeltypes.Counterparty,
 	version string,
 ) error {
-
+	fmt.Println("DEBUG CONNECT")
 	// Require portID is the portID module is bound to
 	boundPort := am.keeper.GetPort(ctx)
 	if boundPort != portID {
@@ -33,11 +33,13 @@ func (am AppModule) OnChanOpenInit(
 	if version != types.Version {
 		return sdkerrors.Wrapf(types.ErrInvalidVersion, "got %s, expected %s", version, types.Version)
 	}
-
+	fmt.Println("DEBUG CLAIM CAPABILITY")
 	// Claim channel capability passed back by IBC module
 	if err := am.keeper.ClaimCapability(ctx, chanCap, host.ChannelCapabilityPath(portID, channelID)); err != nil {
+		fmt.Println("- CLAIM CAPABILITY FAIL")
 		return err
 	}
+	fmt.Println("- CLAIM CAPABILITY SUCCESS")
 
 	return nil
 }
