@@ -23,7 +23,7 @@ func (am AppModule) OnChanOpenInit(
 	counterparty channeltypes.Counterparty,
 	version string,
 ) error {
-	fmt.Println("DEBUG CONNECT")
+	fmt.Println("DEBUG : open init")
 	// Require portID is the portID module is bound to
 	boundPort := am.keeper.GetPort(ctx)
 	if boundPort != portID {
@@ -33,13 +33,11 @@ func (am AppModule) OnChanOpenInit(
 	if version != types.Version {
 		return sdkerrors.Wrapf(types.ErrInvalidVersion, "got %s, expected %s", version, types.Version)
 	}
-	fmt.Println("DEBUG CLAIM CAPABILITY")
+
 	// Claim channel capability passed back by IBC module
 	if err := am.keeper.ClaimCapability(ctx, chanCap, host.ChannelCapabilityPath(portID, channelID)); err != nil {
-		fmt.Println("- CLAIM CAPABILITY FAIL")
 		return err
 	}
-	fmt.Println("- CLAIM CAPABILITY SUCCESS")
 
 	return nil
 }
@@ -56,7 +54,7 @@ func (am AppModule) OnChanOpenTry(
 	version,
 	counterpartyVersion string,
 ) error {
-
+	fmt.Println("DEBUG : open try")
 	// Require portID is the portID module is bound to
 	boundPort := am.keeper.GetPort(ctx)
 	if boundPort != portID {
@@ -92,6 +90,7 @@ func (am AppModule) OnChanOpenAck(
 	channelID string,
 	counterpartyVersion string,
 ) error {
+	fmt.Println("DEBUG : open ack")
 	if counterpartyVersion != types.Version {
 		return sdkerrors.Wrapf(types.ErrInvalidVersion, "invalid counterparty version: %s, expected %s", counterpartyVersion, types.Version)
 	}
@@ -104,6 +103,7 @@ func (am AppModule) OnChanOpenConfirm(
 	portID,
 	channelID string,
 ) error {
+	fmt.Println("DEBUG : open confirm")
 	return nil
 }
 
@@ -113,6 +113,7 @@ func (am AppModule) OnChanCloseInit(
 	portID,
 	channelID string,
 ) error {
+	fmt.Println("DEBUG : close")
 	// Disallow user-initiated channel closing for channels
 	return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "user cannot close channel")
 }
@@ -123,6 +124,7 @@ func (am AppModule) OnChanCloseConfirm(
 	portID,
 	channelID string,
 ) error {
+	fmt.Println("DEBUG : close confirm")
 	return nil
 }
 
@@ -131,6 +133,7 @@ func (am AppModule) OnRecvPacket(
 	ctx sdk.Context,
 	modulePacket channeltypes.Packet,
 ) (*sdk.Result, []byte, error) {
+	fmt.Println("DEBUG : recieve a message")
 	var ack channeltypes.Acknowledgement
 
 	// this line is used by starport scaffolding # oracle/packet/module/recv
@@ -179,6 +182,7 @@ func (am AppModule) OnAcknowledgementPacket(
 	modulePacket channeltypes.Packet,
 	acknowledgement []byte,
 ) (*sdk.Result, error) {
+	fmt.Println("DEBUG : recieve ack")
 	var ack channeltypes.Acknowledgement
 	if err := types.ModuleCdc.UnmarshalJSON(acknowledgement, &ack); err != nil {
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrUnknownRequest, "cannot unmarshal packet acknowledgement: %v", err)

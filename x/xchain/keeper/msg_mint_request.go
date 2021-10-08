@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"errors"
+	"fmt"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
@@ -68,12 +69,28 @@ func (k Keeper) TransmitMsgMintRequestPacket(
 
 // OnRecvMsgMintRequestPacket processes packet reception
 func (k Keeper) OnRecvMsgMintRequestPacket(ctx sdk.Context, packet channeltypes.Packet, data types.MsgMintRequestPacketData) (packetAck types.MsgMintRequestPacketAck, err error) {
+	fmt.Println("DEBUG : start mint proccess")
 	// validate packet data upon receiving
 	if err := data.ValidateBasic(); err != nil {
 		return packetAck, err
 	}
+	totalCoins := sdk.NewCoins(sdk.NewCoin("token", sdk.NewIntFromUint64(data.Amount)))
 
-	// TODO: packet reception logic
+	fmt.Println("DEBUG : create reciever account")
+	recieverAccount, err := sdk.AccAddressFromBech32(data.Reciever)
+	if err != nil {
+		return packetAck, err
+	}
+
+	fmt.Println("DEBUG : mint coin to module account")
+	if err := k.bankKeeper.MintCoins(ctx, types.ModuleName, totalCoins); err != nil {
+		return packetAck, err
+	}
+
+	fmt.Println("DEBUG : send module to account")
+	if err := k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, recieverAccount, totalCoins); err != nil {
+		return packetAck, err
+	}
 
 	return packetAck, nil
 }

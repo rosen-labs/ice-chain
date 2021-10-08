@@ -11,8 +11,6 @@ import (
 func (k msgServer) SendMsgMintRequest(goCtx context.Context, msg *types.MsgSendMsgMintRequest) (*types.MsgSendMsgMintRequestResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	// TODO: logic before transmitting the packet
-
 	// Construct the packet
 	var packet types.MsgMintRequestPacketData
 
@@ -32,6 +30,7 @@ func (k msgServer) SendMsgMintRequest(goCtx context.Context, msg *types.MsgSendM
 		clienttypes.ZeroHeight(),
 		msg.TimeoutTimestamp,
 	)
+
 	if err != nil {
 		return nil, err
 	}

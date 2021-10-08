@@ -37,7 +37,11 @@ func CmdSendMsgMintRequest() *cobra.Command {
 			if err != nil {
 				return err
 			}
-			var argsDestChainId uint32 = 1
+
+			argsDestChainId, err := argsToUint32("dest_chain_id", args[7])
+			if err != nil {
+				return err
+			}
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {

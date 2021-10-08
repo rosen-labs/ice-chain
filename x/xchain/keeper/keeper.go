@@ -53,8 +53,16 @@ func (k Keeper) BurnCoin(ctx sdk.Context, name string, amt sdk.Coins) error {
 	return k.bankKeeper.BurnCoins(ctx, name, amt)
 }
 
+func (k Keeper) MintCoin(ctx sdk.Context, name string, amt sdk.Coins) error {
+	return k.bankKeeper.MintCoins(ctx, name, amt)
+}
+
 func (k Keeper) SendCoinsFromAccountToModule(ctx sdk.Context, senderAddr sdk.AccAddress, recipientModule string, amt sdk.Coins) error {
 	return k.bankKeeper.SendCoinsFromAccountToModule(ctx, senderAddr, recipientModule, amt)
+}
+
+func (k Keeper) SendCoinsFromModuleToAccount(ctx sdk.Context, senderModule string, recipientAddr sdk.AccAddress, amt sdk.Coins) error {
+	return k.bankKeeper.SendCoinsFromModuleToAccount(ctx, senderModule, recipientAddr, amt)
 }
 
 func (k Keeper) GetAllBalances(ctx sdk.Context, addr sdk.AccAddress) sdk.Coins {
