@@ -11,7 +11,8 @@ func handleMsgBridgeRequest(ctx sdk.Context, k keeper.Keeper, msg *types.MsgBrid
 	if err != nil {
 		return nil, err
 	}
-	totalAmount := msg.Amount.Add(*msg.Fee)
+	totalAmount := sdk.NewCoin("token", sdk.NewIntFromUint64(msg.Amount))
+	totalAmount = totalAmount.Add(sdk.NewCoin("token", sdk.NewIntFromUint64(msg.Fee)))
 	totalInVouchers := sdk.Coins{totalAmount}
 
 	if err := k.SendCoinsFromAccountToModule(ctx, signer, types.ModuleName, totalInVouchers); err != nil {
@@ -25,8 +26,8 @@ func handleMsgBridgeRequest(ctx sdk.Context, k keeper.Keeper, msg *types.MsgBrid
 	if err := k.SendMintRequest(
 		ctx,
 		msg.Reciever,
-		msg.Amount.Amount.Uint64(),
-		msg.Fee.Amount.Uint64(),
+		msg.Amount,
+		msg.Fee,
 		0,
 		1,
 		msg.DestChainId,

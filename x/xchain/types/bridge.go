@@ -6,15 +6,15 @@ import (
 
 func NewMsgBridgeRequest(
 	destChainId uint32,
-	amount sdk.Coin,
-	fee sdk.Coin,
+	amount uint64,
+	fee uint64,
 	reciever string,
 	signer sdk.AccAddress,
 ) *MsgBridgeRequest {
 	return &MsgBridgeRequest{
 		Reciever:    reciever,
-		Amount:      &amount,
-		Fee:         &fee,
+		Amount:      amount,
+		Fee:         fee,
 		DestChainId: destChainId,
 		Signer:      signer.String(),
 	}

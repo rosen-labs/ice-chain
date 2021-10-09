@@ -8,8 +8,8 @@ import "gogoproto/gogo.proto";
 
 message MsgBridgeRequest {
   string reciever = 1;
-  cosmos.base.v1beta1.Coin amount = 2;  
-  cosmos.base.v1beta1.Coin fee = 3; 
+  uint64 amount = 2;  
+  uint64 fee = 3; 
   uint32 destChainId = 4;
   string signer = 5;
 }

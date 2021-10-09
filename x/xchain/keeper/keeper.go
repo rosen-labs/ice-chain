@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/tendermint/tendermint/libs/log"
 
@@ -86,5 +87,5 @@ func (k Keeper) SendMintRequest(
 		SrcChainId:  srcChainId,
 		DestChainId: destChainId,
 	}
-	return k.TransmitMsgMintRequestPacket(ctx, packet, types.PortID, "chan", clienttypes.ZeroHeight(), 0)
+	return k.TransmitMsgMintRequestPacket(ctx, packet, types.PortID, "channel-0", clienttypes.ZeroHeight(), uint64(time.Now().UnixNano()))
 }

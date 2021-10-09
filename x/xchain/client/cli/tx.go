@@ -10,7 +10,6 @@ import (
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
-	sdk "github.com/cosmos/cosmos-sdk/types"
 
 	// "github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/rosen-labs/xchain/x/xchain/types"
@@ -48,8 +47,14 @@ func GetBridgeXTokenCmd() *cobra.Command {
 		Short: "Bridge amounts of x token to specific chain",
 		Args:  cobra.ExactArgs(4),
 		RunE: func(cmd *cobra.Command, args []string) error {
-			argsAmount := string(args[1])
-			argsFee := string(args[2])
+			argsAmount, err := argsToUint64("chain_id", args[1])
+			if err != nil {
+				return err
+			}
+			argsFee, err := argsToUint64("chain_id", args[2])
+			if err != nil {
+				return err
+			}
 			argsReciever := string(args[3])
 			argsChainId, err := argsToUint32("chain_id", args[0])
 			if err != nil {
@@ -66,20 +71,10 @@ func GetBridgeXTokenCmd() *cobra.Command {
 				return fmt.Errorf("must pass from flag")
 			}
 
-			amount, err := sdk.ParseCoinNormalized(argsAmount)
-			if err != nil {
-				return fmt.Errorf("amount must be float")
-			}
-
-			fee, err := sdk.ParseCoinNormalized(argsFee)
-			if err != nil {
-				return fmt.Errorf("fee must be float")
-			}
-
 			msg := types.NewMsgBridgeRequest(
 				argsChainId,
-				amount,
-				fee,
+				argsAmount,
+				argsFee,
 				argsReciever,
 				from,
 			)
