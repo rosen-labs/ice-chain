@@ -57,6 +57,7 @@ func CmdSendMsgMintRequest() *cobra.Command {
 			if err != nil {
 				return err
 			}
+
 			consensusState, _, _, err := channelutils.QueryLatestConsensusState(clientCtx, srcPort, srcChannel)
 			if err != nil {
 				return err

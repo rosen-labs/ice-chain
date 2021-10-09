@@ -79,6 +79,7 @@ func (k Keeper) SendMintRequest(
 	srcChainId uint32,
 	destChainId uint32,
 ) error {
+	fmt.Println("DEBUG : send mint request : unix nano ", time.Now().UnixNano())
 	packet := types.MsgMintRequestPacketData{
 		Reciever:    reciever,
 		Amount:      amount,
@@ -87,5 +88,5 @@ func (k Keeper) SendMintRequest(
 		SrcChainId:  srcChainId,
 		DestChainId: destChainId,
 	}
-	return k.TransmitMsgMintRequestPacket(ctx, packet, types.PortID, "channel-0", clienttypes.ZeroHeight(), uint64(time.Now().UnixNano()))
+	return k.TransmitMsgMintRequestPacket(ctx, packet, types.PortID, "channel-0", clienttypes.ZeroHeight(), uint64(time.Now().UnixNano())+600000000000)
 }
