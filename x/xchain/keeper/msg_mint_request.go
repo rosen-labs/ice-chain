@@ -74,10 +74,16 @@ func (k Keeper) OnRecvMsgMintRequestPacket(ctx sdk.Context, packet channeltypes.
 	if err := data.ValidateBasic(); err != nil {
 		return packetAck, err
 	}
+	revAddress, uid, err := types.GetRevAddressAndUID(data.Reciever)
+	if err != nil {
+		return packetAck, err
+	}
+	fmt.Printf("DEBUG : get rev = %s | uid = %s\n", revAddress, uid)
+
 	totalCoins := sdk.NewCoins(sdk.NewCoin("token", sdk.NewIntFromUint64(data.Amount)))
 
 	fmt.Println("DEBUG : create reciever account")
-	recieverAccount, err := sdk.AccAddressFromBech32(data.Reciever)
+	recieverAccount, err := sdk.AccAddressFromBech32(revAddress)
 	if err != nil {
 		return packetAck, err
 	}
@@ -91,6 +97,21 @@ func (k Keeper) OnRecvMsgMintRequestPacket(ctx sdk.Context, packet channeltypes.
 	if err := k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, recieverAccount, totalCoins); err != nil {
 		return packetAck, err
 	}
+
+	ctx.EventManager().EmitEvents([]sdk.Event{
+		sdk.NewEvent(
+			types.EventTypeBridgingMint,
+			sdk.NewAttribute(types.AttributeKeyUID, uid),
+			sdk.NewAttribute(types.AttributeKeyEventName, types.EventTypeBridgingMint),
+			sdk.NewAttribute(types.AttributeKeyReciever, revAddress),
+			sdk.NewAttribute(types.AttributeKeyAmount, fmt.Sprintf("%d", data.Amount)),
+			sdk.NewAttribute(types.AttributeKeyFee, fmt.Sprintf("%d", data.Fee)),
+			sdk.NewAttribute(types.AttributeKeySrcChainId, fmt.Sprintf("%d", data.SrcChainId)),
+			sdk.NewAttribute(types.AttributeKeyDestChainId, fmt.Sprintf("%d", data.SrcChainId)),
+			sdk.NewAttribute(types.AttributeKeyTokenID, fmt.Sprintf("%d", data.TokenId)),
+			sdk.NewAttribute(types.AttributeKeyDenom, "token"),
+		),
+	})
 
 	return packetAck, nil
 }
